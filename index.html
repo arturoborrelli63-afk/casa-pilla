@@ -795,6 +795,7 @@ footer{
       <div class="bk-body">
 
         <div class="alert err" id="alertErr"><span id="errMsg"></span></div>
+        <div class="alert ok"  id="alertOk"><span>✅ Richiesta inviata! Ti risponderemo entro 24 ore.</span></div>
 
         <!-- persone -->
         <div class="fl">
@@ -1226,8 +1227,7 @@ async function sendReq(){
   const note=document.getElementById('fNote').value.trim();
   if(!nome) {showErr('Inserisci il nome.');return;}
   if(!cogn) {showErr('Inserisci il cognome.');return;}
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)){showErr('Email non valida. Assicurati di includere la @.');return;}
-  if(tel && !/^[\d\s\+\-\.\(\)]{6,}$/.test(tel)){showErr('Numero di telefono non valido.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)){showErr('Email non valida.');return;}
   const r=calcPrice(ci,co,pers);
   if(!r||!r.rows.length){showErr('Nessuna notte valida nel periodo selezionato.');return;}
   const nights=r.rows.reduce((s,x)=>s+x.n,0);
@@ -1244,9 +1244,8 @@ async function sendReq(){
       price_detail:r.rows.map(x=>`${MESI[x.m]}: ${x.n} notti x ${x.rate}€ = ${x.sub}€`).join(' | '),
       notes:note||'Nessuna',
     };
+    console.log('=== DATI INVIATI A EMAILJS ===', JSON.stringify(emailData, null, 2));
     await emailjs.send(EMAILJS_SERVICE_ID,EMAILJS_TEMPLATE_ID,emailData);
-    // Risposta automatica al cliente
-    await emailjs.send(EMAILJS_SERVICE_ID,'template_0k4w8fs',emailData);
     document.getElementById('alertOk').classList.add('on');
     document.getElementById('guestForm').classList.remove('on');
     document.getElementById('breakdown').classList.remove('on');
