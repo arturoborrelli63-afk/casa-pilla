@@ -1246,6 +1246,7 @@ async function sendReq(){
     };
     console.log('=== DATI INVIATI A EMAILJS ===', JSON.stringify(emailData, null, 2));
     await emailjs.send(EMAILJS_SERVICE_ID,EMAILJS_TEMPLATE_ID,emailData);
+    await emailjs.send(EMAILJS_SERVICE_ID,'template_0k4w8fs',emailData);
     document.getElementById('alertOk').classList.add('on');
     document.getElementById('guestForm').classList.remove('on');
     document.getElementById('breakdown').classList.remove('on');
